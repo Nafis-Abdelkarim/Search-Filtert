@@ -1,23 +1,29 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import JsonFile from './mackaroo.json';
 
 function App() {
+  //setting the hook wich is string type
+  const [ serachTerm, setSearchTerm] = useState("");
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <input type='text' placeholder='Search...' 
+      onChange={(event) => {setSearchTerm(event.target.value)}}/>
+      
+      {/*Using the filter function to filter the input */}
+      {JsonFile.filter((val)=>{
+        if (serachTerm === ""){
+          return val;
+        } else if (val.first_name.toLocaleLowerCase().includes(serachTerm.toLocaleLowerCase())) { 
+          return val
+        }
+      }).map((val, key) => {
+        return (
+          <div className='user' key={key}>
+            <p>{val.first_name}</p>
+          </div>
+        );
+      })}
     </div>
   );
 }
